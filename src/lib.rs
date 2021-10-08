@@ -450,6 +450,11 @@ fn read_machine_id() -> [u8; 3] {
     [hash[0], hash[1], hash[2]]
 }
 
+[cfg(not(target_os = "linux"))]
+fn platform_machine_id() -> Result<String, io::Error> {
+    Err(io::Error::new(io::ErrorKind::NotFound, "unsupported"))
+}
+
 #[cfg(target_os = "linux")]
 fn platform_machine_id() -> Result<String, io::Error> {
     // XXX: unlikely to work if read with an unpriviledged user
